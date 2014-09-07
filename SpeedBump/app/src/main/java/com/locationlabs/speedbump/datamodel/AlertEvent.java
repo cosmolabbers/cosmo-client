@@ -1,5 +1,8 @@
 package com.locationlabs.speedbump.datamodel;
 
+import android.graphics.drawable.Drawable;
+
+import com.locationlabs.speedbump.R;
 import com.locationlabs.speedbump.enums.LockEvent;
 
 import java.util.Calendar;
@@ -28,10 +31,10 @@ public class AlertEvent {
                 return "Hard Brake";
 
             case HARD_RIGHT:
-                return "Right Turn too fast";
+                return "Turned too fast";
 
             case HARD_LEFT:
-                return "Left Turn too fast";
+                return "Turned too fast";
 
             case ACCIDENT:
                 return "Collision detected";
@@ -59,6 +62,7 @@ public class AlertEvent {
         cal.setTime(occurrence);
 
         StringBuilder builder = new StringBuilder();
+        /*
         if (cal.get(Calendar.DAY_OF_WEEK) == calToday.get(Calendar.DAY_OF_WEEK)) {
             builder.append("Today");
         } else {
@@ -95,6 +99,7 @@ public class AlertEvent {
         }
 
         builder.append(", ");
+        */
         builder.append(cal.get(Calendar.HOUR_OF_DAY));
         builder.append(":");
         int minute = cal.get(Calendar.MINUTE);
@@ -103,6 +108,65 @@ public class AlertEvent {
         builder.append(cal.get(Calendar.AM_PM) == Calendar.AM ? "AM" : "PM");
 
         return builder.toString();
+    }
+
+    public int getDisplayImageId() {
+        switch(lockEvent) {
+            case HARD_ACCELERATION:
+                return R.drawable.hard_accel_icon;
+
+            case HARD_BRAKE:
+                return R.drawable.hard_brake_icon;
+
+            case HARD_RIGHT:
+                return R.drawable.hard_turn_icon;
+
+            case HARD_LEFT:
+                return R.drawable.hard_turn_icon;
+
+            case ACCIDENT:
+                return R.drawable.collision_icon;
+
+            case SPEEDING:
+                return R.drawable.speeding_icon;
+
+            case OVER_SPEEDING:
+                return R.drawable.speeding_icon;
+
+            case IGNITION_ON:
+                return R.drawable.start_trip_icon;
+
+            case IGNITION_OFF:
+                return R.drawable.end_trip_icon;
+
+            default:
+                return 0;
+        }
+    }
+
+    public int getPointValue() {
+        switch(lockEvent) {
+            case IGNITION_ON:
+            case IGNITION_OFF:
+                return 0;
+            case ACCIDENT:
+                return 50;
+            case OVER_SPEEDING:
+                return 10;
+            case HARD_ACCELERATION:
+            case HARD_BRAKE:
+            case HARD_RIGHT:
+            case HARD_LEFT:
+            case SPEEDING:
+                return 4;
+            default:
+                return 4;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return lockEvent.name() + " " + getDisplayTime();
     }
 
 }

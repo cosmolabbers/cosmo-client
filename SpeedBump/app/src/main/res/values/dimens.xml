@@ -3,6 +3,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="score_text_size">46sp</dimen>
+    <dimen name="score_text_size">60sp</dimen>
     <dimen name="lock_text_size">18sp</dimen>
+
+    <dimen name="list_text_size">16sp</dimen>
 </resources>

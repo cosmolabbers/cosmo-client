@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.locationlabs.speedbump.R;
 import com.locationlabs.speedbump.services.LockDetectService;
+import com.locationlabs.speedbump.utils.ColorUtil;
 import com.locationlabs.speedbump.utils.LogUtil;
 
 import org.w3c.dom.Text;
@@ -31,10 +32,6 @@ import java.util.concurrent.locks.Lock;
  *
  */
 public class LockActivity extends Activity {
-
-    private static final int BEST_COLOR = Color.rgb(0x2E, 0x8B, 0x57);
-    private static final int DANGER_COLOR = Color.rgb(0xDA, 0xA5, 0x20);
-    private static final int WORST_COLOR = Color.rgb(0xB2, 0x22, 0x22);
 
     public static boolean isAlive;
     public static boolean isLocked;
@@ -148,7 +145,7 @@ public class LockActivity extends Activity {
         Bundle bundle = getIntent().getExtras();
         int score = bundle.getInt(LockDetectService.EXTRA_SCORE_KEY, -1);
         if (score > 0) {
-            int scoreColor = interpolateColorFromScore(score);
+            int scoreColor = ColorUtil.interpolateColorFromScore(score);
             //backgroundLayout.setBackgroundColor(interpolateColorFromScore(score));
             int edgeScoreColor =
                 Color.rgb(Math.max(Color.red(scoreColor) - 200, 0),
@@ -162,44 +159,6 @@ public class LockActivity extends Activity {
             backgroundLayout.setBackground(sd);
 
         }
-    }
-
-    private static int interpolateColorFromScore(int score) {
-        int topComp, bottomComp;
-        double scoreRatio;
-        if (score > 80) {
-            topComp = BEST_COLOR;
-            bottomComp = DANGER_COLOR;
-            scoreRatio = 1 - ((score - 80) / 20.0);
-        } else {
-            topComp = DANGER_COLOR;
-            bottomComp = WORST_COLOR;
-            scoreRatio = 1 - (score / 80.0);
-        }
-
-        int rTop = Color.red(topComp);
-        int bTop = Color.blue(topComp);
-        int gTop = Color.green(topComp);
-
-        int rBot = Color.red(bottomComp);
-        int bBot = Color.blue(bottomComp);
-        int gBot = Color.green(bottomComp);
-
-        int red, blue, green;
-        red = rTop - (int) ((rTop - rBot) * scoreRatio);
-        blue = bTop - (int) ((bTop - bBot) * scoreRatio);
-        green = gTop - (int) ((gTop - gBot) * scoreRatio);
-
-//        LogUtil.d("first red is " + Color.red(topComp) + " and second is " + Color.red(bottomComp));
-//        LogUtil.d("first blue is " + Color.blue(topComp) + " and second is " + Color.blue(bottomComp));
-//        LogUtil.d("first green is " + Color.green(topComp) + " and second is " + Color.green(bottomComp));
-//
-//        LogUtil.d("score ratio is " + scoreRatio);
-//        LogUtil.d("red is " + red);
-//        LogUtil.d("blue is " + blue);
-//        LogUtil.d("green is " + green);
-
-        return Color.rgb(red, green, blue);
     }
 
     private class LockReceiver extends BroadcastReceiver {

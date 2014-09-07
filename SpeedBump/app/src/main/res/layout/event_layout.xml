@@ -5,10 +5,19 @@
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:gravity="center_vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="8dp"
     android:paddingBottom="8dp" >
+
+    <ImageView
+        android:id="@+id/event_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:paddingRight="12dp"
+        android:paddingLeft="0dp"/>
 
     <TextView
         android:id="@+id/event_id"
@@ -16,13 +25,34 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="#333333"
-        android:textSize="16sp" />
+        android:textSize="@dimen/list_text_size"
+        android:layout_gravity="center_vertical"/>
 
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#333333"
-        android:textSize="16sp" />
+        android:textSize="@dimen/list_text_size"
+        android:paddingRight="12dp"
+        android:paddingLeft="8dp"
+        android:layout_gravity="center_vertical" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_gravity="center_vertical"
+        android:background="#666666" />
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/list_text_size"
+        android:layout_gravity="center_vertical"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="0dp"/>
 
 </LinearLayout>

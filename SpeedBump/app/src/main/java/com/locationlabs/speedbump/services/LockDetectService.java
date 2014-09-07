@@ -101,17 +101,18 @@ public class LockDetectService extends Service {
 
     private void receivedJson(JSONObject response) {
         boolean isDriving = false;
-        alertEvents = new ArrayList<AlertEvent>();
         JSONArray array = response.optJSONArray("alerts");
+        alertEvents = new ArrayList<AlertEvent>();
         if (array != null) {
             for (int i = 0; i < array.length(); i++) {
                 JSONArray event = array.optJSONArray(i);
                 if (event != null) {
+//                    LogUtil.e("event is " + event);
                     LockEvent en = LockEvent.getLockEventFromString((String) event.opt(0));
 
-                    if (en == LockEvent.IGNITION_ON)
+                    if (en == LockEvent.IGNITION_ON) {
                         isDriving = true;
-                    else if (en == LockEvent.IGNITION_OFF)
+                    } else if (en == LockEvent.IGNITION_OFF)
                         isDriving = false;
 
                     long timestamp = (Long) event.opt(1);
