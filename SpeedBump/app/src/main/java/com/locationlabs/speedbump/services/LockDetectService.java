@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.locks.Lock;
 
 /**
@@ -67,7 +68,17 @@ public class LockDetectService extends Service {
             handler.postDelayed(drivingRunnable, 1000);
         }
 
+        LogUtil.e("lock activity alive? " + LockActivity.isAlive);
+
         return superVersion;
+    }
+
+    @Override
+    public void onDestroy() {
+        Intent in = new Intent(this, LockDetectService.class);
+        startService(in);
+        LogUtil.d("reached on destroy... Start it up again!");
+        super.onDestroy();
     }
 
     @Override
@@ -112,8 +123,17 @@ public class LockDetectService extends Service {
 
                     if (en == LockEvent.IGNITION_ON) {
                         isDriving = true;
-                    } else if (en == LockEvent.IGNITION_OFF)
+                    } else if (en == LockEvent.IGNITION_OFF) {
                         isDriving = false;
+                        if (alertEvents.get(alertEvents.size()-1).lockEvent == LockEvent.IGNITION_OFF) {
+                            // we send multiple off events, so just ignore any additional at the end
+                            break;
+                        }
+                    } else if (alertEvents.size() == 0) {
+                        AlertEvent alert = new AlertEvent(en, -1);
+                        alertEvents.add(alert);
+                        isDriving = true;
+                    }
 
                     long timestamp = (Long) event.opt(1);
                     AlertEvent alert = new AlertEvent(en, timestamp);
@@ -140,11 +160,11 @@ public class LockDetectService extends Service {
             LogUtil.d("not driving, hide lock screen");
             unlockScreen(score);
         } else {
-            delay += 1500;
+            //delay += 1500;
             sendScore(score);
         }
 
-        handler.removeCallbacks(drivingRunnable);
+        //handler.removeCallbacks(drivingRunnable);
         handler.postDelayed(drivingRunnable, delay);
     }
 

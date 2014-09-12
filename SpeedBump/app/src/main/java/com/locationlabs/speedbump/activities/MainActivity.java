@@ -58,9 +58,12 @@ public class MainActivity extends Activity {
 
         listview = (ListView) findViewById(R.id.listview);
 
-        score = getIntent().getIntExtra(LockDetectService.EXTRA_SCORE_KEY, 0);
+        score = getIntent().getIntExtra(LockDetectService.EXTRA_SCORE_KEY, -1);
 
-        if (LockDetectService.alertEvents != null && LockDetectService.alertEvents.size() != 0) {
+        if (LockDetectService.alertEvents != null
+            && LockDetectService.alertEvents.size() != 0
+            && score > 0) {
+
             eventAdapter = new EventAdapter(LockDetectService.alertEvents);
             listview.setAdapter(eventAdapter);
         }

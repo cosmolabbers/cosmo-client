@@ -13,10 +13,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/score_text_size"
-        android:textColor="#333333"
+        android:textColor="#FFFFFF"
+        android:shadowColor="#000000"
+        android:shadowDx="5"
+        android:shadowDy="5"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
         android:visibility="gone"
         android:padding="15dp" />
+
+    <ImageView
+        android:id="@+id/lock_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/big_lock_image"
+        android:layout_gravity="center" />
 
 </RelativeLayout>

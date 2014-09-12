@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class AlertEvent {
 
-    LockEvent lockEvent;
+    public LockEvent lockEvent;
     Date occurrence;
 
     public AlertEvent(LockEvent lockEvent, long timestamp) {
@@ -57,6 +57,10 @@ public class AlertEvent {
     }
 
     public String getDisplayTime() {
+        if (occurrence == null) {
+            return "";
+        }
+
         Calendar calToday = Calendar.getInstance();
         Calendar cal = Calendar.getInstance();
         cal.setTime(occurrence);

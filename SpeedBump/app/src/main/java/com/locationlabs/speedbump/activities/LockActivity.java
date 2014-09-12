@@ -16,6 +16,7 @@ import android.speech.tts.TextToSpeech;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -41,6 +42,7 @@ public class LockActivity extends Activity {
     RelativeLayout backgroundLayout;
     TextView scoreText, lockText;
     RadialGradient radialGradient;
+    ImageView lockImage;
 
     Point screenSize;
 
@@ -72,6 +74,7 @@ public class LockActivity extends Activity {
         if (getIntent().getAction().equals(LockDetectService.ACTION_LOCK)) {
             isLocked = true;
         }
+        lockImage = (ImageView) findViewById(R.id.lock_image);
 
         scoreText = (TextView) findViewById(R.id.score_text);
 
@@ -112,7 +115,7 @@ public class LockActivity extends Activity {
         }
     }
 
-    private void unlockScreen(Integer score) {
+    private void unlockScreen(final Integer score) {
         Intent in = getIntent();
         in.setAction(LockDetectService.ACTION_UNLOCK);
         setIntent(in);
@@ -123,12 +126,14 @@ public class LockActivity extends Activity {
             updateBackgroundColor();
         }
 
+        lockImage.setVisibility(View.GONE);
         scoreText.setVisibility(View.VISIBLE);
         scoreText.setText(String.valueOf(score));
         scoreText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent in = new Intent(LockActivity.this, MainActivity.class);
+                in.putExtra(LockDetectService.EXTRA_SCORE_KEY, score);
                 LockActivity.this.startActivity(in);
                 LockActivity.this.finish();
             }
